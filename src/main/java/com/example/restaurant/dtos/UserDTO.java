@@ -22,6 +22,4 @@ public class UserDTO implements Serializable {
     @Size(min = 6)
     @NotEmpty
     String password;
-
-
 }

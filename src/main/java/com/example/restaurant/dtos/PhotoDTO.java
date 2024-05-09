@@ -8,6 +8,6 @@ import java.io.Serializable;
  * DTO for {@link com.example.restaurant.entities.Photo}
  */
 @Value
-public class PhotoDto implements Serializable {
+public class PhotoDTO implements Serializable {
     String url;
 }

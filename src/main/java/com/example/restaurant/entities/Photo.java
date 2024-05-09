@@ -1,5 +1,6 @@
 package com.example.restaurant.entities;
 
+import com.example.restaurant.dtos.PhotoDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -22,4 +23,8 @@ public class Photo {
     @ManyToOne
     @JoinColumn(name = "establishment_id")
     private Establishment establishment;
+
+    public Photo(PhotoDTO photoDto) {
+        this.url = photoDto.getUrl();
+    }
 }

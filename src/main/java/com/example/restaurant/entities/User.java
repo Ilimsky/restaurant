@@ -1,15 +1,18 @@
 package com.example.restaurant.entities;
 
-import com.example.restaurant.dtos.UserDto;
+import com.example.restaurant.dtos.UserDTO;
+import com.example.restaurant.enums.Role;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.Collections;
 
 @Entity(name = "users")
 @Getter
@@ -25,16 +28,20 @@ public class User implements UserDetails {
     private String username;
     private String email;
     private String password;
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
-    public User(UserDto userDto) {
+
+    public User(UserDTO userDto) {
         this.username = userDto.getUsername();
         this.email = userDto.getEmail();
         this.password = userDto.getPassword();
+        this.role = Role.ROLE_USER;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        return Collections.singletonList(new SimpleGrantedAuthority(role.name()));
     }
 
     @Override

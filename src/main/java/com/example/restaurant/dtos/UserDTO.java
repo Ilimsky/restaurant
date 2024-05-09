@@ -11,13 +11,17 @@ import java.io.Serializable;
  * DTO for {@link com.example.restaurant.entities.User}
  */
 @Value
-public class UserDto implements Serializable {
+public class UserDTO implements Serializable {
     @NotEmpty
     String username;
+
     @Email
     @NotEmpty
     String email;
+
     @Size(min = 6)
     @NotEmpty
     String password;
+
+
 }

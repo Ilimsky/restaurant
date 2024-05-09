@@ -1,5 +1,6 @@
 package com.example.restaurant.entities;
 
+import com.example.restaurant.dtos.EstablishmentDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -20,4 +21,9 @@ public class Establishment {
     private String name;
 
     private String description;
+
+    public Establishment(EstablishmentDTO establishmentDto) {
+        this.name = establishmentDto.getName();
+        this.description = establishmentDto.getDescription();
+    }
 }

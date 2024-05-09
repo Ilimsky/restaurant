@@ -1,10 +1,7 @@
 package com.example.restaurant.entities;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
 @Getter
@@ -25,5 +22,6 @@ public class Review {
     private Establishment establishment;
 
     @ManyToOne
+    @JoinColumn(name = "user_id")
     private User user;
 }

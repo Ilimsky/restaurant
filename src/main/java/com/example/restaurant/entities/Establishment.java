@@ -1,17 +1,17 @@
 package com.example.restaurant.entities;
 
-import com.example.restaurant.dtos.EstablishmentDTO;
-import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import lombok.*;
 
 @Entity
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class Establishment {
 
     @Id
@@ -22,8 +22,4 @@ public class Establishment {
 
     private String description;
 
-    public Establishment(EstablishmentDTO establishmentDto) {
-        this.name = establishmentDto.getName();
-        this.description = establishmentDto.getDescription();
-    }
 }

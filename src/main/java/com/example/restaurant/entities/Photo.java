@@ -22,7 +22,7 @@ public class Photo {
 
     @ManyToOne
     @JoinColumn(name = "establishment_id")
-    private Establishment establishment;
+    private Eatery eatery;
 
     public Photo(PhotoDTO photoDto) {
         this.url = photoDto.getUrl();

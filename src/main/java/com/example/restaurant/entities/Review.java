@@ -19,7 +19,7 @@ public class Review {
 
     @ManyToOne
     @JoinColumn(name = "establishment_id")
-    private Establishment establishment;
+    private Eatery eatery;
 
     @ManyToOne
     @JoinColumn(name = "user_id")

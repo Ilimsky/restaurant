@@ -18,10 +18,6 @@ public class Review {
     private String comment;
 
     @ManyToOne
-    @JoinColumn(name = "establishment_id")
+    @JoinColumn(name = "eatery_id")
     private Eatery eatery;
-
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
 }

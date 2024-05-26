@@ -1,0 +1,366 @@
+1) Get all restaurants api 
+http://localhost:8080/foodie/searchAPI/getAllRestaurants
+
+***********************************************************************************************
+
+2) input for register user - valid
+
+#Post - add new user
+http://localhost:8080/foodie/userAPI/register
+{
+    "userName":"Jackey chain six",
+    "emailId":"Jack@gmail.com",
+    "contactNumber":"9234567898",
+    "password":"Jack@22",
+    "roles" : [
+        {
+            "roleType":"CUSTOMER"
+        }
+    ],
+    "addressList":[
+        {
+            "userAddressName":"myaddress",
+            "addressLine1":"addressLine1",
+            "addressLine2":"addressLine2",
+            "area":"TimesSquare",
+            "city":"Seatle",
+            "userState":"California",
+            "pincode":"123128"
+        }
+    ]
+}
+
+***********************************************************************************************
+
+							3) Login
+							
+http://localhost:8080/foodie/userAPI/login
+#input-invalid
+
+{
+    "contactNumber":"9234567890",
+    "password": "Mansi@13"
+}
+#input-valid
+
+{
+    "contactNumber":"9234567897",
+    "password": "Jack@22"
+}
+
+***********************************************************************************************
+
+							3) Place order
+#invalid - no user found
+http://localhost:8080/foodie/customerAPI/placeOrder/9234567899/8
+
+#Valid
+http://localhost:8080/foodie/customerAPI/placeOrder/8882039476/8
+#body
+[
+        {
+            "orderItemsId": null,
+            "dish": {
+                "dishId": 1025
+            },
+            "qty": 1
+        }
+]
+
+***********************************************************************************************
+
+						4) View Order
+#Valid
+http://localhost:8080/foodie/customerAPI/viewOrder/8882039476
+
+#invalid - no user found
+http://localhost:8080/foodie/customerAPI/viewOrder/8875632141
+
+**********************************************************************************************
+						5) view nearby restaurants
+#find by area of customer
+http://localhost:8080/foodie/customerAPI/viewNearbyRestaurant/9880253413/noarea
+
+#if customer have multiple address then use selected area
+http://localhost:8080/foodie/customerAPI/viewNearbyRestaurant/9880253413/Baner
+
+#for role other than customer
+http://localhost:8080/foodie/customerAPI/viewNearbyRestaurant/8875632142/Baner
+
+***********************************************************************************************
+
+						6) view all address 
+						
+#invalid - role other than customer - Sorry! You are not customer.
+http://localhost:8080/foodie/customerAPI/viewAllAddresses/8875632142
+#Valid
+http://localhost:8080/foodie/customerAPI/viewAllAddresses/8882039476
+
+---add new address
+#address already exist
+http://localhost:8080/foodie/customerAPI/addNewAddress/8882039476
+#input
+ {
+        "userAddressName": "Home",
+        "addressLine1": "304, Rajhans Apartments",
+        "addressLine2": "Lashkar Mohalla",
+        "area": "Vasant Vihar",
+        "city": "Delhi",
+        "userState": "Delhi",
+        "pincode": "110021"
+    }
+    
+#valid - only change userAddressName in above input & use same uri
+#invalide - exception for non customer role
+http://localhost:8080/foodie/customerAPI/viewAllAddresses/8875632142
+
+---update address
+http://localhost:8080/foodie/customerAPI/updateAddress/8882039476
+#input valid
+ {
+        "userAddressId": 10,
+        "userAddressName": "updated10",
+        "addressLine1": "304, Rajhans Apartments",
+        "addressLine2": "updated Lashkar Mohalla",
+        "area": "Vasant Vihar",
+        "city": "Delhi",
+        "userState": "Delhi",
+        "pincode": "110021"
+    }
+#Inbvalid - address not found
+ {
+        "userAddressId": 100,
+        "userAddressName": "updated10",
+        "addressLine1": "304, Rajhans Apartments",
+        "addressLine2": "updated Lashkar Mohalla",
+        "area": "Vasant Vihar",
+        "city": "Delhi",
+        "userState": "Delhi",
+        "pincode": "110021"
+    }
+
+----delete address 
+http://localhost:8080/foodie/customerAPI/deleteAddress/8882039476
+#input
+ {
+        "userAddressId": 19,
+        "userAddressName": "updated10",
+        "addressLine1": "304, Rajhans Apartments",
+        "addressLine2": "updated Lashkar Mohalla",
+        "area": "Vasant Vihar",
+        "city": "Delhi",
+        "userState": "Delhi",
+        "pincode": "110021"
+    }
+
+***********************************************************************************************
+					7) Admin view all restaurants
+					
+#invalid - no user found 
+http://localhost:8080/foodie/adminAPI/viewAllRegistrationRequests/9880253411
+#invalid - not an admin
+http://localhost:8080/foodie/adminAPI/viewAllRegistrationRequests/8882039476
+#valid
+http://localhost:8080/foodie/adminAPI/viewAllRegistrationRequests/9476888203
+
+-----------accept request
+#input
+{
+        "restaurantId": 1
+}
+#invalid - not admin exception
+http://localhost:8080/foodie/adminAPI/accepctRegistrationRequest/8882039476
+
+#invalid-already accepted or rejected
+http://localhost:8080/foodie/adminAPI/accepctRegistrationRequest/9476888203
+
+#valid accepted -if old status is Pending
+---update restaurant set approval_status="Pending" where restaurant_id=1;
+http://localhost:8080/foodie/adminAPI/accepctRegistrationRequest/9476888203
+
+-----------reject request
+http://localhost:8080/foodie/adminAPI/rejectRegistrationRequest/9476888203
+#same cases as above
+
+*******************************************************************************************
+							8)Admin: delete Low rating restaurant
+
+#valid -
+http://localhost:8080/foodie/adminAPI/deleteLowRatingRestaurant/9476888203
+#body -
+{
+        "restaurantId": 1
+}
+
+
+*********************************************************************************************
+VendorApi
+					9)	Vendor: Register restaurant
+#Valid input body
+ {
+       
+        "restaurantName": "KFC",
+        "restaurantContact": "8934217843",
+        "restaurantType": "Nonveg",
+        "addressLine1": "3, Gajanan Nagar",
+        "area": "Kothrud",
+        "city": "Pune",
+        "resState": "Maharashtra",
+        "pincode": 411038,
+        "approvalStatus": "Accepted",
+        "avgRating": 4.2,
+        "dishes": [
+            {
+               
+                "dishName": "Chicken Burger",
+                "dishCuisine": "Burger",
+                "dishType": "Nonveg",
+                "dishDescription": "Spicy and chrunchy chicken tikki with soft bun with fresh lettuce and mustard sauce",
+                "price": 150.0,
+                "avgRating": 4.5,
+                "speciality": "Chef Special",
+                "imageUrl": "assets/chicken_burger.jpg"
+            },
+            {
+                "dishId": 1007,
+                "dishName": "Chicken Cheese Burger",
+                "dishCuisine": "Burger",
+                "dishType": "Nonveg",
+                "dishDescription": "Spicy and chrunchy chicken tikki with soft bun with fresh lettuce and extra cheese",
+                "price": 200.0,
+                "avgRating": 4.2,
+                "speciality": "Chef Special",
+                "imageUrl": "assets/chicken_cheese_burger.jpg"
+            },
+            {
+                
+                "dishName": "Chicken Wings",
+                "dishCuisine": "chicken",
+                "dishType": "Nonveg",
+                "dishDescription": "Spicy and chrunchy chicken wings",
+                "price": 550.0,
+                "avgRating": 4.6,
+                "speciality": "Chef Special",
+                "imageUrl": "assets/chicken_wings.jpg"
+            },
+            {
+                
+                "dishName": "French Fries",
+                "dishCuisine": "Fries",
+                "dishType": "Veg",
+                "dishDescription": "Classic crunchy and tasty french fries",
+                "price": 200.0,
+                "avgRating": 4.5,
+                "speciality": "Chef Special",
+                "imageUrl": "assets/french_fries.jpg"
+            }
+        ],
+        "photoUrls": [
+            "assets/kfcb1.jpg",
+            "assets/kfcb2.jpg",
+            "assets/kfcb3.jpg"
+        ],
+        "transaction": {
+            "restaurantOrderCounter": 1,
+            "restaurantApproxCost": 500,
+            "restaurantStatus": false
+        }
+    }
+
+#invalid - not a vendor
+http://localhost:8080/foodie/vendorAPI/registerRestaurant/9476888203
+
+#invalid - "errorMessage": "Restaurant is already registered by you, You can again register with another contact number!",
+http://localhost:8080/foodie/vendorAPI/registerRestaurant/8875632142
+
+#Valid-above body with diff contact number for restaurant
+http://localhost:8080/foodie/vendorAPI/registerRestaurant/8875632142
+
+
+#Invalid -"errorMessage": "Restaurant is already registered by other vendor!",
+http://localhost:8080/foodie/vendorAPI/registerRestaurant/8882039476
+ {
+       
+        "restaurantName": "KFC",
+        "restaurantContact": "8934217845",
+        "restaurantType": "Nonveg",
+        "addressLine1": "3, Gajanan Nagar",
+        "area": "Kothrud",
+        "city": "Pune",
+        "resState": "Maharashtra",
+        "pincode": 411038,
+        "approvalStatus": "Accepted",
+        "avgRating": 4.2,
+        "dishes":[
+            {
+               
+                "dishName": "Farmhouse Pizza",
+                "dishCuisine": "Pizza",
+                "dishType": "Veg",
+                "dishDescription": "Pizza topped with fresh green olives, tomatoes and onions",
+                "price": 400.0,
+                "avgRating": 3.8,
+                "speciality": "Chef Special",
+                "imageUrl": "assets/farmhouse_pizza.jpg"
+            }
+        ]
+        ,
+        "photoUrls": [
+            "assets/kfcb1.jpg",
+            "assets/kfcb2.jpg"
+        ],
+        "transaction": {
+            "restaurantOrderCounter": 1,
+            "restaurantApproxCost": 500,
+            "restaurantStatus": false
+        }
+    },
+
+**************************************************************************************************
+10) Vendor: View restaurant and menu
+#valid
+http://localhost:8080/foodie/vendorAPI/viewRestaurantAndMenu/8882039476
+
+**************************************************************************************************
+
+11) add,update,delete dish
+#valid body -
+ {
+                "dishName": "Chicken Burger",
+                "dishCuisine": "Burger",
+                "dishType": "Nonveg",
+                "dishDescription": "Spicy and chrunchy chicken tikki with soft bun with fresh lettuce and mustard sauce",
+                "price": 150.0,
+                "avgRating": 4.5,
+                "speciality": "Chef Special",
+                "imageUrl": "assets/chicken_burger.jpg"
+            }
+            
+#invalid -     "errorMessage": "Restaurant not found!",
+http://localhost:8080/foodie/vendorAPI/addDish/8875632142/100
+
+#valid -
+http://localhost:8080/foodie/vendorAPI/addDish/8875632142/9
+
+#invalid - "errorMessage": "Restaurant registration is pending or rejected, You cannot add dish.",
+http://localhost:8080/foodie/vendorAPI/addDish/8875632142/8
+
+
+---update dish
+#valid
+http://localhost:8080/foodie/vendorAPI/updateDish/8875632142/2
+
+ {
+     "dishId":1006,
+                "dishName": "Vada Pav",
+                "dishCuisine": "Indian Burger",
+                "dishType": "Veg",
+                "dishDescription": "Spicy and chrunchy Vada with soft bun with fresh onian and tomato kechup",
+                "price": 150.0,
+                "avgRating": 4.5,
+                "speciality": "Chef Special",
+                "imageUrl": "assets/vada_pav.jpg"
+            }
+            
+            
+
